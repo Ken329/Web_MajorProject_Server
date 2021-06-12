@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const firebase = require("./public/js/firebase/firebase_info");
 const app = express();
 const port = 3000;
+var uid = 0;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -22,6 +23,21 @@ app.get('/', (req, res)=>{
 app.get('/login', (req, res)=>{
     res.render('small_login');
 })
+app.get('/login/loginAdmin', (req, res)=>{
+    var admin = req.query.admin;
+    const fire = firebase.getfireInstance();
+    const result = fire.loginAdmin(admin[0], admin[1]);
+    result
+    .then(function(data){
+        if(data === false){
+            res.json({ data : false});
+        }else{
+            uid = data;
+            res.json({ data : data });
+        }
+    })
+    .then(error => console.log(error));
+})
 app.get('/signUp', (req, res)=>{
     res.render('small_signup');
 })
@@ -35,7 +51,45 @@ app.post('/signup/addAdmin', (req, res)=>{
     })
     .then(error => console.log(error));
 })
-
+app.get(`/admin_site`, (req, res)=>{
+    var id = req.query.user_id;
+    if(id === undefined || id === "" || id === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.findUser(id)
+    result
+    .then(function(data){
+        if(data.length === 0){
+            res.send("Something goes wrong, please try to login again");
+            return;
+        }
+        res.render('admin_site');
+    })
+    .then(error => console.error(error));
+})
+app.get('/admin_site/admin_info', (req, res)=>{
+    var id = req.query.user_id;
+    if(id === undefined || id === "" || id === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.findUser(id)
+    result
+    .then(function(data){
+        if(data.length === 0){
+            res.send("Something goes wrong, please try to login again");
+            return;
+        }
+        res.json({ data : data });
+    })
+    .then(error => console.error(error));
+})
+app.get('/admin_site/admin_info/admin_edit', (req, res)=>[
+    
+])
 app.listen(port, () =>{
     console.info(`Listening to port ${port}`);
 });

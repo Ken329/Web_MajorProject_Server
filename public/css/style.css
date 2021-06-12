@@ -35,7 +35,6 @@ body{
     list-style: none;
 }
 .header-container div ul li{
-    margin: 0 10px;
     width: auto;
     height: auto;
     padding: 15px;
@@ -43,7 +42,7 @@ body{
     cursor: pointer;
 }
 .header-container div ul li:hover{
-    background-color:cornsilk;
+    font-weight: bold;
 }
 /*-----------------*/
 /*| Login/signup  |*/
@@ -114,6 +113,10 @@ body{
     margin-top: 10px;
     cursor: pointer;
 }
+.login-con button:focus{
+    outline: none;
+    border: 2px solid black;
+}
 /*-----------------*/
 /*|    Sign Up     |*/
 /*-----------------*/
@@ -125,7 +128,68 @@ body{
     height: 30px;
     padding: 0 5px;
 }
+/*-----------------*/
+/*|   Admin Site   |*/
+/*-----------------*/
+.admin-site-con{
+    width: 100%;
+    height: auto;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.admin-site-con-div{
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+.admin-site-con img{
+    width: 150px;
+    height: 150px;
+    border-radius: 30px;
+    margin-top: 30px;
+}
+.admin-site-div{
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+.admin-site-div div{
+    width: 50%;
+    height: auto;
+    padding: 30px 50px;
+}
+.admin-site-icon{
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    opacity: 0.7;
+    border-radius: 20px;
+}
+.admin-site-icon i{
+    padding: 10px 30px;
+    color: black;
+    cursor: pointer;
+}
 
+
+@media screen and (max-width: 1160px){
+    .admin-site-div{
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        width: 100%;
+    }
+    .admin-site-div div{
+        width: 100%;
+    }
+}
 @media screen and (max-width: 1000px){
     .header-container img{
         width: 110px;
@@ -144,7 +208,6 @@ body{
     .header-container div ul li{
         padding: 5px;
         border-radius: 20px;
-        margin: 0 5px;
         font-size: large;
     }
 }
@@ -159,7 +222,6 @@ body{
     .header-container div ul li{
         padding: 5px;
         border-radius: 20px;
-        margin: 0;
         font-size: medium;
     }
 }

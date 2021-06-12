@@ -1,8 +1,10 @@
 const firebase = require('firebase/app');
 require('firebase/auth');
+require('firebase/firebase-auth');
 require('firebase/firestore');
 require('firebase/firebase-firestore');
-const {response} = require('express')
+require('firebase/firebase-app');
+const { response } = require('express')
 let instance = null;
 
 var firebaseConfig = {
@@ -16,12 +18,12 @@ var firebaseConfig = {
     measurementId: "G-3QZNVWFP62"
 };
 firebase.initializeApp(firebaseConfig);
-const firestore = firebase.firestore();
 
 class firebaseServices{
     static getfireInstance(){
         return instance ? instance : new firebaseServices();
     }
+    // adding admin
     async addAdmin(email, password, restaurant, cuisine, image, start_time, end_time){
         try{
             const response = await new Promise((resolve, reject)=>{
@@ -35,6 +37,7 @@ class firebaseServices{
                         user_start_time : start_time,
                         user_end_time : end_time
                     }
+                    const firestore = firebase.firestore();
                     firestore.collection('user').add(data);
                     resolve("User Created");
                 })
@@ -42,9 +45,45 @@ class firebaseServices{
                     resolve(error.message);
                 })
             })
-            return response
+            return response;
         }catch(error){
             console.log(error);
+        }
+    }
+    // admin login
+    async loginAdmin(email, password){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                .then( (userCredit)=>{
+                    resolve(firebase.auth().currentUser.uid);
+                })
+                .catch((error)=>{
+                    resolve(false);
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async findUser(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').where("user_id", "==", id).get()
+                .then(docs => {
+                    docs.forEach(doc => result.push(doc.data()));
+                    resolve(result);
+                })
+                .then((error)=>{
+                    console.log(error);
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
         }
     }
 }
