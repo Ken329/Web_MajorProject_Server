@@ -38,7 +38,7 @@ class firebaseServices{
                         user_end_time : end_time
                     }
                     const firestore = firebase.firestore();
-                    firestore.collection('user').add(data);
+                    firestore.collection('user').doc(firebase.auth().currentUser.uid).set(data);
                     resolve("User Created");
                 })
                 .catch((error)=>{
@@ -67,6 +67,7 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    // checking authorised
     async findUser(id){
         try{
             const response = await new Promise((resolve, reject)=>{
@@ -84,6 +85,26 @@ class firebaseServices{
             return response;
         }catch(error){
             console.log(error.message);
+        }
+    }
+    // update admin
+    async updateAdmin(id, restaurant, cuisine, image, start_time, end_time){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    user_restaurant : restaurant,
+                    user_cuisine : cuisine,
+                    user_image : image,
+                    user_start_time : start_time,
+                    user_end_time : end_time
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).update(data);
+                resolve("Information Updated");
+            })
+            return response;
+        }catch(error){
+            console.log(error);
         }
     }
 }

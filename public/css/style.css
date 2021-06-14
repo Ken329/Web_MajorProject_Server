@@ -105,13 +105,14 @@ body{
     margin: 10px 5px;
 }
 .login-con button{
-    width: 100px;
+    width: auto;
     height: 30px;
     border-radius: 15px;
     border: none;
     background-color: white;
     margin-top: 10px;
     cursor: pointer;
+    padding: 5px 20px;
 }
 .login-con button:focus{
     outline: none;

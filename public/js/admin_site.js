@@ -22,5 +22,7 @@ document.getElementById('admin_logout').addEventListener('click', function(){
     window.open('/', "_self");
 })
 document.getElementById('admin_edit').addEventListener("click", function(){
-    
+    var baseUrl = (window.location).href;
+    var user_id = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
+    window.open(`/admin_info_edit?user_id=${user_id}`, "_blank", "width = 650px, height = 400px");
 })
