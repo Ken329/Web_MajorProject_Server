@@ -126,6 +126,27 @@ app.put('/admin_info_edit/info_update', (req, res)=>{
     .then(error => console.error(error));
 })
 
+// admin menu page
+app.get('/admin_site_menu', (req, res)=>{
+    var id = req.query.user_id;
+    if(id === undefined || id === "" || id === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.findUser(id)
+    result
+    .then(function(data){
+        if(data.length === 0){
+            res.send("Something goes wrong, please try to login again");
+            return;
+        }
+        res.render('admin_site_menu');
+    })
+    .then(error => console.error(error));
+})
+
+
 app.listen(port, () =>{
     console.info(`Listening to port ${port}`);
 });

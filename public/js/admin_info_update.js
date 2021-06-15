@@ -18,7 +18,6 @@ document.getElementById("admin_update").addEventListener('click', function(){
           .then(data => {
             alert(data.result);
             window.close('/admin_info_edit');
-            window.location.reload();
           });
       }else{
         alert("Do not leave any field empty!!!");
