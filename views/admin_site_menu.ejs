@@ -1,93 +1,19 @@
 <%- include('partial/header.ejs') %>
 <div class="admin-site-menu-con">
     <div class="menu-con-div">
-        <div class="menu-con-div-btn">
+        <div id="admin_menu_add" class="menu-con-div-btn">
             Add <i class="fas fa-plus-circle"></i>
         </div>
-        <select class="menu-con-div-select">
-            <option value="All">All</option>
-            <option value="Chicken">Chicken</option>
-            <option value="Beef">Beef</option>
-            <option value="Pork">Pork</option>
+        <select id="menu_select" class="menu-con-div-select">
+            
         </select>
         <div class="menu-con-div-btn">
             <i class="fas fa-search"></i>
-            <input type="text" id="" placeholder="Search">
+            <input type="text" id="" placeholder="Search by name">
         </div>
     </div>
-    <div class="menu-con-div  menu-con-list">
-        <!-- <h2>Menu Section Empty</h2> -->
-        <div class="menu-con-div-list">
-            <img src="https://images.pexels.com/photos/4409273/pexels-photo-4409273.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-            <div class="div-list-btn">
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div class="div-list-div">
-                <p>Name: dfdsdfsfs fdssdfssdsd fsf</p>
-                <p>Price: </p>
-                <p>Categories: </p>
-            </div>
-        </div>
-        <div class="menu-con-div-list">
-            <img src="https://images.pexels.com/photos/4409273/pexels-photo-4409273.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-            <div class="div-list-btn">
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div class="div-list-div">
-                <p>Name: dfdsdfsfs fdssdfssdsd fsf</p>
-                <p>Price: </p>
-                <p>Categories: </p>
-            </div>
-        </div>
-        <div class="menu-con-div-list">
-            <img src="https://images.pexels.com/photos/4409273/pexels-photo-4409273.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-            <div class="div-list-btn">
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div class="div-list-div">
-                <p>Name: dfdsdfsfs fdssdfssdsd fsf</p>
-                <p>Price: </p>
-                <p>Categories: </p>
-            </div>
-        </div>
-        <div class="menu-con-div-list">
-            <img src="https://images.pexels.com/photos/4409273/pexels-photo-4409273.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-            <div class="div-list-btn">
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div class="div-list-div">
-                <p>Name: dfdsdfsfs fdssdfssdsd fsf</p>
-                <p>Price: </p>
-                <p>Categories: </p>
-            </div>
-        </div>
-        <div class="menu-con-div-list">
-            <img src="https://images.pexels.com/photos/4409273/pexels-photo-4409273.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-            <div class="div-list-btn">
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div class="div-list-div">
-                <p>Name: dfdsdfsfs fdssdfssdsd fsf</p>
-                <p>Price: </p>
-                <p>Categories: </p>
-            </div>
-        </div>
-        <div class="menu-con-div-list">
-            <img src="https://images.pexels.com/photos/4409273/pexels-photo-4409273.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-            <div class="div-list-btn">
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div class="div-list-div">
-                <p>Name: dfdsdfsfs fdssdfssdsd fsf</p>
-                <p>Price: </p>
-                <p>Categories: </p>
-            </div>
-        </div>
+    <div id="menu_list" class="menu-con-div  menu-con-list">
+        
     </div>
 </div>
+<script src="js/admin_site_menu.js"></script>

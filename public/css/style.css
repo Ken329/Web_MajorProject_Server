@@ -213,7 +213,7 @@ body{
     background-color: white;
     cursor: pointer;
     border: none;
-    margin: 0 20px;
+    margin: 10px 20px;
 }
 .menu-con-div-select:focus{
     outline: none;
@@ -224,7 +224,10 @@ body{
     transition: 0.5s ease-out;
 }
 .menu-con-div-btn input:focus{
-    width: 200px;
+    width: 240px;
+}
+.menu-con-div-btn input:hover{
+    width: 240px;
 }
 .menu-con-div-btn i{
     margin: 0 5px;
@@ -232,9 +235,12 @@ body{
 .menu-con-list{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
     padding-top: 30px;
+}
+.menu-con-list h2{
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
 }
 .menu-con-div-list{
     width: 15%;
@@ -277,7 +283,58 @@ body{
 .div-list-div p{
     margin-top: 5px;
 }
-
+/*---------------------------*/
+/*|   Admin Site - Menu Add  |*/
+/*---------------------------*/
+.admin-menu-con{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 150px;
+}
+.admin-menu-con label, .admin-menu-con input{
+    margin: 10px 5px;
+}
+.admin-menu-con input:focus{
+    outline: none;
+}
+.food-btn-con{
+    width: 200px;
+    margin: 10px 5px;
+    position: relative;
+}
+.food-btn-con button{
+    width: 30%;
+    height: 100%;
+    background-color: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    position: relative;
+    cursor: pointer;
+}
+.admin-menu-con-toggle{
+    width: 20%;
+    height: 100%;
+    position: absolute;
+    background-color: wheat;
+    border-radius: 20px;
+    top: 0;
+    left: 5%;
+    transition: 0.5s;
+}
+#admin_add_menu{
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 30px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+#admin_add_menu:focus{
+    outline: none;
+}
 
 @media screen and (max-width: 1160px){
     .admin-site-div{
@@ -289,6 +346,12 @@ body{
     .admin-site-div div{
         width: 100%;
     }
+    .menu-con-div-list{
+        width: 20%;
+    }
+    .admin-site-menu-con{
+        padding: 50px 70px;
+    }
 }
 @media screen and (max-width: 1000px){
     .header-container img{
@@ -298,6 +361,12 @@ body{
     .header-container div ul li{
         padding: 10px;
         border-radius: 25px;
+    }
+    .menu-con-div-list{
+        width: 22%;
+    }
+    .admin-site-menu-con{
+        padding: 50px 60px;
     }
 }
 @media screen and (max-width: 900px){
@@ -309,6 +378,12 @@ body{
         padding: 5px;
         border-radius: 20px;
         font-size: large;
+    }
+    .menu-con-div-list{
+        width: 24%;
+    }
+    .admin-site-menu-con{
+        padding: 50px 50px;
     }
 }
 @media screen and (max-width: 800px){
@@ -324,6 +399,15 @@ body{
         border-radius: 20px;
         font-size: medium;
     }
+    .menu-con-div-list{
+        width: 26%;
+    }
+    .menu-con-div-list p{
+        font-size: small;
+    }
+    .admin-site-menu-con{
+        padding: 50px 40px;
+    }
 }
 @media screen and (max-width: 700px){
     .header-container img{
@@ -337,5 +421,11 @@ body{
         padding: 5px;
         border-radius: 15px;
         font-size: small;
+    }
+    .menu-con-div-list{
+        width: 30%;
+    }
+    .admin-site-menu-con{
+        padding: 50px 20px;
     }
 }

@@ -146,6 +146,53 @@ app.get('/admin_site_menu', (req, res)=>{
     .then(error => console.error(error));
 })
 
+// admin menu page - get by categories
+app.get('/admin_site_menu/get_data_categories', (req, res)=>{
+    var admin = req.query.admin;
+    if(admin[0] === undefined || admin[0] === "" || admin[0] === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.getMenuByCate(admin[0], admin[1])
+    result
+    .then(function(data){
+        res.json({ data : data });
+    })
+    .then(error => console.error(error));
+})
+
+// admin menu page - get by search
+
+// admin menu page - add
+app.get('/admin_menu_add', (req, res)=>{
+    var id = req.query.user_id;
+    if(id === undefined || id === "" || id === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.findUser(id)
+    result
+    .then(function(data){
+        if(data.length === 0){
+            res.send("Wrong user ID, please check");
+            return;
+        }
+        res.render('partial/small_admin_menu_add');
+    })
+    .then(error => console.error(error));
+})
+app.post('/admin_menu_add/put_data', (req, res)=>{
+    var admin = req.query.admin;
+    const fire = firebase.getfireInstance();
+    const result = fire.addMenu(admin[0], admin[1], admin[2], admin[3], admin[4], admin[5], admin[6])
+    result
+    .then(function(data){
+        res.json({ result: data })
+    })
+    .then(error => console.log(error));
+})
 
 app.listen(port, () =>{
     console.info(`Listening to port ${port}`);

@@ -4,7 +4,7 @@ require('firebase/firebase-auth');
 require('firebase/firestore');
 require('firebase/firebase-firestore');
 require('firebase/firebase-app');
-const { response } = require('express')
+const { response, query } = require('express')
 let instance = null;
 
 var firebaseConfig = {
@@ -101,6 +101,55 @@ class firebaseServices{
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).update(data);
                 resolve("Information Updated");
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    // add menu
+    async addMenu(id, name, price, categories, image, available, discount){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    food_name: name,
+                    food_price: price,
+                    food_categories: categories,
+                    food_image: image,
+                    food_available: available,
+                    food_discount: discount
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection('menu').doc(id +"_"+ name).set(data);
+                resolve("Menu Added Successfully");
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //get menu by categories
+    async getMenuByCate(id, categories){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                var query = "";
+                if(categories === "all"){
+                    firestore.collection('user').doc(id).collection('menu').get()
+                    .then(docs =>{
+                        docs.forEach(doc => result.push(doc.data()));
+                        resolve(result);
+                    })
+                    .then(error => console.log(error));
+                }else{
+                    firestore.collection('user').doc(id).collection('menu').where("food_categories", "==", categories).get()
+                    .then(docs =>{
+                        docs.forEach(doc => result.push(doc.data()));
+                        resolve(result);
+                    })
+                    .then(error => console.log(error));
+                }
             })
             return response;
         }catch(error){
