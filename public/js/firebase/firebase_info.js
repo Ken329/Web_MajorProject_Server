@@ -129,27 +129,17 @@ class firebaseServices{
         }
     }
     //get menu by categories
-    async getMenuByCate(id, categories){
+    async getMenuByCate(id){
         try{
             const response = await new Promise((resolve, reject)=>{
                 let result = [];
                 const firestore = firebase.firestore();
-                var query = "";
-                if(categories === "all"){
-                    firestore.collection('user').doc(id).collection('menu').get()
-                    .then(docs =>{
-                        docs.forEach(doc => result.push(doc.data()));
-                        resolve(result);
-                    })
-                    .then(error => console.log(error));
-                }else{
-                    firestore.collection('user').doc(id).collection('menu').where("food_categories", "==", categories).get()
-                    .then(docs =>{
-                        docs.forEach(doc => result.push(doc.data()));
-                        resolve(result);
-                    })
-                    .then(error => console.log(error));
-                }
+                firestore.collection('user').doc(id).collection('menu').get()
+                .then(docs =>{
+                    docs.forEach(doc => result.push(doc.data()));
+                    resolve(result);
+                })
+                .then(error => console.log(error));
             })
             return response;
         }catch(error){

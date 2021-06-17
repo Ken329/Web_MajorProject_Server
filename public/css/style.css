@@ -215,10 +215,16 @@ body{
     border: none;
     margin: 10px 20px;
 }
+.menu-con-div-btn:nth-child(3){
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+}
 .menu-con-div-select:focus{
     outline: none;
 }
 .menu-con-div-btn input{
+    height: 100%;
     outline: none;
     border: none;
     transition: 0.5s ease-out;

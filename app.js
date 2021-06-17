@@ -146,23 +146,21 @@ app.get('/admin_site_menu', (req, res)=>{
     .then(error => console.error(error));
 })
 
-// admin menu page - get by categories
+// admin menu page - get all categories
 app.get('/admin_site_menu/get_data_categories', (req, res)=>{
-    var admin = req.query.admin;
-    if(admin[0] === undefined || admin[0] === "" || admin[0] === null){
+    var user_id = req.query.user_id;
+    if(user_id === undefined || user_id === "" || user_id === null){
         res.send("Something goes wrong, please try to login again");
         return;
     }
     const fire = firebase.getfireInstance();
-    const result = fire.getMenuByCate(admin[0], admin[1])
+    const result = fire.getMenuByCate(user_id)
     result
     .then(function(data){
         res.json({ data : data });
     })
     .then(error => console.error(error));
 })
-
-// admin menu page - get by search
 
 // admin menu page - add
 app.get('/admin_menu_add', (req, res)=>{
