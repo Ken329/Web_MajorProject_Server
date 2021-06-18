@@ -1,3 +1,6 @@
+window.onunload = function(){
+  window.opener.location.reload();
+};
 document.getElementById("admin_update").addEventListener('click', function(){
     var restaurant = document.getElementById("admin_restaurant").value;
     var cuisine = document.getElementById("admin_cuisine").value;

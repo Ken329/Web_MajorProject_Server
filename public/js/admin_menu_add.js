@@ -1,6 +1,9 @@
 var available = "yes";
 var discount = "yes";
 
+window.onunload = function(){
+    window.opener.location.reload();
+};
 document.getElementById("available_y").addEventListener('click',  function(){
     document.getElementById('available_toggle').style.left = "5%";
     available = "yes";

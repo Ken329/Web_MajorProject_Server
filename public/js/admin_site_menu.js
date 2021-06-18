@@ -15,6 +15,16 @@ select.onchange = function(){
 search.oninput = function(){
     putData(search.value, "search");
 }
+document.getElementById('menu_list').addEventListener('click', function(event){
+    var baseUrl = (window.location).href;
+    var user_id = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
+    if(event.target.className === "edit-btn"){
+        editmenu(user_id, event.target.id);
+    }
+    if(event.target.className === "delete-btn"){
+        deleteMenu(user_id, event.target.id);
+    }
+})
 
 getData("all", "categories");
 
@@ -48,8 +58,8 @@ function putData(command, type){
                     html += `<div class="menu-con-div-list">
                                 <img src="${element.food_image}" alt="">
                                 <div class="div-list-btn">
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+                                    <button id="${element.food_name}" class="edit-btn">Edit</button>
+                                    <button id="${element.food_name}" class="delete-btn">Delete</button>
                                 </div>
                                 <div class="div-list-div">
                                     <p>Name: ${element.food_name}</p>
@@ -67,8 +77,8 @@ function putData(command, type){
                         html += `<div class="menu-con-div-list">
                                 <img src="${element.food_image}" alt="">
                                 <div class="div-list-btn">
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+                                <button id="${element.food_name}" class="edit-btn">Edit</button>
+                                <button id="${element.food_name}" class="delete-btn">Delete</button>
                                 </div>
                                 <div class="div-list-div">
                                     <p>Name: ${element.food_name}</p>
@@ -88,8 +98,8 @@ function putData(command, type){
                     html += `<div class="menu-con-div-list">
                             <img src="${element.food_image}" alt="">
                             <div class="div-list-btn">
-                                <button>Edit</button>
-                                <button>Delete</button>
+                            <button id="${element.food_name}" class="edit-btn">Edit</button>
+                            <button id="${element.food_name}" class="delete-btn">Delete</button>
                             </div>
                             <div class="div-list-div">
                                 <p>Name: ${element.food_name}</p>
@@ -114,6 +124,19 @@ function putCategories(data){
         html += `<option value="${data[i]}">${data[i]}</option>`;
     }
     select.innerHTML = html;
+}
+function editmenu(user_id, food_id){
+    window.open(`/admin_menu_edit?admin=${user_id}&admin=${food_id}`, "_blank", "width = 650px, height = 400px");
+}
+function deleteMenu(user_id, food_name){
+    fetch(`/admin_menu_edit/deleteData?admin=${user_id}&admin=${food_name}`, {
+        method: "DELETE"
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.result);
+        window.location.reload();
+    })
 }
 function uniq(a) {
     var seen = {};

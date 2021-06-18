@@ -120,7 +120,7 @@ class firebaseServices{
                     food_discount: discount
                 }
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection('menu').doc(id +"_"+ name).set(data);
+                firestore.collection('user').doc(id).collection('menu').add(data);
                 resolve("Menu Added Successfully");
             })
             return response;
@@ -140,6 +140,68 @@ class firebaseServices{
                     resolve(result);
                 })
                 .then(error => console.log(error));
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //get single food from menu
+    async getMenuBySingleId(user_id, food_name){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(user_id).collection('menu').where("food_name", "==", food_name).get()
+                .then(docs =>{
+                    docs.forEach(doc => result.push(doc.data()));
+                    resolve(result);
+                })
+                .then(error => console.log(error));
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //update menu
+    async updateMenu(id, ori_name, name, price, categories, image, available, discount){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    food_name: name,
+                    food_price: price,
+                    food_categories: categories,
+                    food_image: image,
+                    food_available: available,
+                    food_discount: discount
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection('menu').where("food_name", "==", ori_name).get()
+                .then(function(doc){
+                    doc.forEach(function(element){
+                        element.ref.update(data);
+                    })
+                })
+                resolve("Menu Updated Succesfully");
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //Delete menu
+    async deleteMenu(user_id, food_name){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(user_id).collection('menu').where("food_name", "==", food_name).get()
+                .then(function(doc){
+                    doc.forEach(function(element){
+                        element.ref.delete();
+                    })
+                })
+                resolve("Menu deleted Succesfully");
             })
             return response;
         }catch(error){

@@ -184,7 +184,77 @@ app.get('/admin_menu_add', (req, res)=>{
 app.post('/admin_menu_add/put_data', (req, res)=>{
     var admin = req.query.admin;
     const fire = firebase.getfireInstance();
-    const result = fire.addMenu(admin[0], admin[1], admin[2], admin[3], admin[4], admin[5], admin[6])
+    const result = fire.getMenuBySingleId(admin[0], admin[1])
+    result
+    .then(function(data){
+        if(data.length === 0){
+            const result = fire.addMenu(admin[0], admin[1], admin[2], admin[3], admin[4], admin[5], admin[6])
+            result
+            .then(function(data){
+                res.json({ result: data })
+            })
+            .then(error => console.log(error));
+        }else{
+            res.json({ result: "Food appear in your menu, kindly check!!!"});
+        }
+    })
+})
+
+// admin menu page - edit
+app.get('/admin_menu_edit', (req, res)=>{
+    var admin = req.query.admin;
+    if(admin[0] === undefined || admin[0] === "" || admin[0] === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.findUser(admin[0])
+    result
+    .then(function(data){
+        if(data.length === 0){
+            res.send("Wrong user ID, please check");
+            return;
+        }
+        res.render('partial/small_admin_menu_edit');
+    })
+    .then(error => console.error(error));
+})
+app.get('/admin_menu_edit/getData', (req, res)=>{
+    var admin = req.query.admin;
+    if(admin[0] === undefined || admin[0] === "" || admin[0] === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.getMenuBySingleId(admin[0], admin[1])
+    result
+    .then(function(data){
+        res.json({ result: data })
+    })
+    .then(error => console.log(error));
+})
+app.put('/admin_menu_edit/updateData', (req, res)=>{
+    var admin = req.query.admin;
+    if(admin[0] === undefined || admin[0] === "" || admin[0] === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.updateMenu(admin[0], admin[1], admin[2], admin[3], admin[4], admin[5], admin[6], admin[7])
+    result
+    .then(function(data){
+        res.json({ result: data })
+    })
+    .then(error => console.log(error));
+})
+app.delete('/admin_menu_edit/deleteData', (req, res)=>{
+    var admin = req.query.admin;
+    if(admin[0] === undefined || admin[0] === "" || admin[0] === null){
+        res.send("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.deleteMenu(admin[0], admin[1])
     result
     .then(function(data){
         res.json({ result: data })
