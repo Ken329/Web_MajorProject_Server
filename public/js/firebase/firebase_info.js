@@ -176,11 +176,10 @@ class firebaseServices{
                     food_available: available,
                     food_discount: discount
                 }
-                const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection('menu').where("food_name", "==", ori_name).get()
-                .then(function(doc){
-                    doc.forEach(function(element){
-                        element.ref.update(data);
+                firebase.firestore().collection('user').doc(id).collection('menu').where("food_name", "==", ori_name).get()
+                .then(function(docs){
+                    docs.forEach((element)=>{
+                        firebase.firestore().collection('user').doc(id).collection('menu').doc(element.id).update(data);
                     })
                 })
                 resolve("Menu Updated Succesfully");
@@ -194,11 +193,10 @@ class firebaseServices{
     async deleteMenu(user_id, food_name){
         try{
             const response = await new Promise((resolve, reject)=>{
-                const firestore = firebase.firestore();
-                firestore.collection('user').doc(user_id).collection('menu').where("food_name", "==", food_name).get()
+                firebase.firestore().collection('user').doc(user_id).collection('menu').where("food_name", "==", food_name).get()
                 .then(function(doc){
                     doc.forEach(function(element){
-                        element.ref.delete();
+                        firebase.firestore().collection('user').doc(user_id).collection('menu').doc(element.id).delete();
                     })
                 })
                 resolve("Menu deleted Succesfully");

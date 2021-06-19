@@ -262,6 +262,26 @@ app.delete('/admin_menu_edit/deleteData', (req, res)=>{
     .then(error => console.log(error));
 })
 
+// admin generate page
+app.get('/admin_site_generate', (req, res)=>{
+    var id = req.query.user_id;
+    if(id === undefined || id === "" || id === null){
+        res.status("Something goes wrong, please try to login again");
+        return;
+    }
+    const fire = firebase.getfireInstance();
+    const result = fire.findUser(id)
+    result
+    .then(function(data){
+        if(data.length === 0){
+            res.send("Wrong user id, kindly check and see");
+            return;
+        }
+        res.render('admin_site_generate');
+    })
+    .then(error => console.error(error));
+})
+
 app.listen(port, () =>{
     console.info(`Listening to port ${port}`);
 });

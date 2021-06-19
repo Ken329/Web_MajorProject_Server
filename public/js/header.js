@@ -6,6 +6,10 @@ document.getElementById('menu').addEventListener('click', function(){
     var id = getId();
     window.open(`/admin_site_menu?user_id=${id}`, "_self");
 })
+document.getElementById('generate').addEventListener('click', function(){
+    var id = getId();
+    window.open(`/admin_site_generate?user_id=${id}`, "_self");
+})
 
 function getId(){
     var baseUrl = (window.location).href;
