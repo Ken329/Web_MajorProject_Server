@@ -356,6 +356,52 @@ body{
 #admin_update_menu:focus{
     outline: none;
 }
+/*----------------------------*/
+/*|   Admin Site - Generate  |*/
+/*----------------------------*/
+.generate-con{
+    width: 100%;
+    height: auto;
+    padding: 50px 80px;
+}
+.generate-con-div{
+    width: 100%;
+    height: auto;
+    display: flex;   
+}
+.generate-con-div-qr{
+    width: 100%;
+    height: auto;
+}
+.generate-con-div div{
+    width: auto;
+    height: auto;
+    padding: 10px;
+    border-radius: 15px;
+    margin: 10px 20px;
+    background-color: white;
+    cursor: pointer;
+}
+.generate-con-div-qr h2{
+    margin: 20px;
+}
+.con-div-qr-div{
+    display: flex;
+    flex-wrap: wrap;
+}
+.con-div-qr{
+    width: 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.con-div-qr h4{
+    margin-top: 20px;
+}
+
 
 @media screen and (max-width: 1160px){
     .admin-site-div{
