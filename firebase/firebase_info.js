@@ -86,6 +86,134 @@ class firebaseServices{
             console.log(error);
         }
     }
+    async getRestaurantById(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').where("user_id", "==", id).get()
+                .then(docs => {
+                    docs.forEach( doc => {       
+                        result.push(doc.data());
+                    });
+                    resolve(result);
+                })
+                .then(error => console.log(error));
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async updateUserDetail(id, restaurant, cuisine, image, start_time, end_time, credit){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    user_restaurant : restaurant,
+                    user_cuisine : cuisine,
+                    user_image : image,
+                    user_start_time : start_time,
+                    user_end_time : end_time,
+                    user_credit : credit
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).update(data);
+                resolve("Information Updated");
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async addNewOrderTakeAway(orderId, id, food, amount, customer, phone, email, type, status, method, date){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    order_id: orderId,
+                    order_food : food,
+                    order_amount : amount,
+                    order_customer : customer,
+                    order_phone : phone,
+                    order_email : email,
+                    order_type : type,
+                    order_status : status,
+                    order_method : method,
+                    order_date : date
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
+                .then((data) => {
+                    resolve(data);  
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async addNewOrderDineIn(orderId, id, food, amount, customer, tableNo, phone, email, type, status, method, date){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    order_id: orderId,
+                    order_food : food,
+                    order_amount : amount,
+                    order_customer : customer,
+                    order_no : tableNo,
+                    order_phone : phone,
+                    order_email : email,
+                    order_type : type,
+                    order_status : status,
+                    order_method : method,
+                    order_date : date
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
+                .then((data) => {
+                    resolve(data);  
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async trackOrderWithId(restaurantId, orderId){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                const result = [];
+                firestore.collection('user').doc(restaurantId).collection('order').where("order_id", "==", orderId).get()
+                .then(docs => {
+                    docs.forEach(doc => result.push(doc.data()));
+                    resolve(result);
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async trackingFoodWithId(restaurantId, foodId){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                const result = [];
+                firestore.collection('user').doc(restaurantId).collection('menu').get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        if(foodId.includes(doc.id)){
+                            result.push(doc.data());
+                        }
+                    });
+                    resolve(result);
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
 
 
     // adding admin
@@ -152,26 +280,7 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    // update admin
-    async updateAdmin(id, restaurant, cuisine, image, start_time, end_time){
-        try{
-            const response = await new Promise((resolve, reject)=>{
-                const data = {
-                    user_restaurant : restaurant,
-                    user_cuisine : cuisine,
-                    user_image : image,
-                    user_start_time : start_time,
-                    user_end_time : end_time
-                }
-                const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).update(data);
-                resolve("Information Updated");
-            })
-            return response;
-        }catch(error){
-            console.log(error);
-        }
-    }
+    
     // add menu
     async addMenu(id, name, price, categories, image, available, discount){
         try{

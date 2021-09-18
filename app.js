@@ -30,8 +30,9 @@ app.get('/getAllMenuRestaurant', (req, res) => {
 app.post('/getRestaurantMenuById', (req, res) => {
     const id = req.body.id;
     
+    console.log(id)
     const fire = firebase.getfireInstance();
-    const result = fire.getMenuByrestaurantId(id.toString());
+    const result = fire.getMenuByrestaurantId(id);
     result
     .then((data) => res.json({data: data}))
     .then(error => console.log(error));
@@ -41,6 +42,80 @@ app.post('/getRestaurantByCategories', (req, res) => {
     
     const fire = firebase.getfireInstance();
     const result = fire.getRestaurantByCategories(categories);
+    result
+    .then((data) => res.json({data: data}))
+    .then(error => console.log(error));
+})
+app.post('/cashInRestaurant', (req, res) => {
+    const id = req.body.id;
+    const amount = req.body.amount;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.getRestaurantById(id);
+    result
+    .then((data) => {
+        const total = parseFloat(data[0].user_credit) + parseFloat(amount);
+        const cashInResult = fire.updateUserDetail(id, data[0].user_restaurant, data[0].user_cuisine, data[0].user_image, data[0].user_start_time, data[0].user_end_time, total.toFixed(2));
+        cashInResult
+        .then((data) => res.json({data: true}))
+    })
+    .then(error => console.log(error));
+})
+app.post('/takeAwayFromRestaurant', (req, res) => {
+    const orderId = req.body.orderId;
+    const id = req.body.id;
+    const food = req.body.food;
+    const amount = req.body.amount;
+    const customer = req.body.customer;
+    const phone = req.body.phone;
+    const type = req.body.type;
+    const email = req.body.email;
+    const status = req.body.status;
+    const method = req.body.method;
+    const date = req.body.date;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.addNewOrderTakeAway(orderId, id.toString(), food, amount, customer, phone, email, type, status, method, date);
+    result
+    .then((data) => res.json({data: data}))
+    .then(error => console.log(error));
+})
+app.post('/dineInFromRestaurant', (req, res) => {
+    const orderId = req.body.orderId;
+    const id = req.body.id;
+    const food = req.body.food;
+    const amount = req.body.amount;
+    const customer = req.body.customer;
+    const tableNo = req.body.table_no;
+    const phone = req.body.phone;
+    const type = req.body.type;
+    const email = req.body.email;
+    const status = req.body.status;
+    const method = req.body.method;
+    const date = req.body.date;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.addNewOrderDineIn(orderId, id.toString(), food, amount, customer, tableNo, phone, email, type, status, method, date);
+    result
+    .then((data) => res.json({data: data}))
+    .then(error => console.log(error));
+})
+app.post('/trackOrderWithId', (req, res) => {
+    const restaurantId = req.body.restaurantId;
+    const orderId = req.body.orderId;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.trackOrderWithId(restaurantId, orderId);
+    result
+    .then((data) => res.json({data: data}))
+    .then(error => console.log(error));
+})
+app.post('/trackingFoodWithId', (req, res) => {
+    const restaurantId = req.body.restaurantId;
+    const foodId = req.body.foodId;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.trackingFoodWithId(restaurantId, foodId);
     result
     .then((data) => res.json({data: data}))
     .then(error => console.log(error));
