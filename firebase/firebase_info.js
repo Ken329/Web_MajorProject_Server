@@ -23,6 +23,7 @@ class firebaseServices{
     static getfireInstance(){
         return instance ? instance : new firebaseServices();
     }
+
     // function without user login
     async getAllMenuRestaurant(){
         try{
@@ -93,7 +94,7 @@ class firebaseServices{
                 const firestore = firebase.firestore();
                 firestore.collection('user').where("user_id", "==", id).get()
                 .then(docs => {
-                    docs.forEach( doc => {       
+                    docs.forEach( doc => {     
                         result.push(doc.data());
                     });
                     resolve(result);
@@ -214,7 +215,6 @@ class firebaseServices{
             console.log(error);
         }
     }
-    // adding admin
     async addAdmin(email, password, restaurant, cuisine, image, price_range, last_name, first_name, gender, state, address, city, 
         postal_code){
         try{
@@ -266,16 +266,17 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+
+    // function with user id and api checked
     async getUser(id){
         try{
             const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
                 firestore.collection('user').where("user_id", "==", id).get()
                 .then(docs => {
-                    docs.forEach(doc => result.push(doc.data()));
-                    resolve({success: true, data: result});
-                })
-                .then((error)=>{
-                    resolve({success: false});
+                    docs.forEach( doc => result.push(doc.data()));
+                    resolve(result)
                 })
             })
             return response;

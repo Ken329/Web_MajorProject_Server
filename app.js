@@ -163,7 +163,11 @@ app.post('/getUser', (req, res)=>{
     const result = fire.getUser(uid);
     result
     .then( (data) => {
-        res.json({ data : data });
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            res.json({ success : true, data : data });
+        }
     })
     .then(error => console.log(error));
 })
