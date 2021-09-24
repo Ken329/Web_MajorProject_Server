@@ -120,41 +120,52 @@ app.post('/trackingFoodWithId', (req, res) => {
     .then((data) => res.json({data: data}))
     .then(error => console.log(error));
 })
+app.post('/addAdmin', (req, res)=>{
+    const email = req.body.email;
+    const password = req.body.password;
+    const restaurant = req.body.restaurant;
+    const cuisine = req.body.cuisine;
+    const image = req.body.image;
+    const price_range = req.body.priceRange;
+    const last_name = req.body.lastName;
+    const first_name = req.body.firstName;
+    const gender = req.body.gender;
+    const state = req.body.state;
+    const address = req.body.address;
+    const city = req.body.city;
+    const postal_code = req.body.postalCode;
 
-// login Page
-// app.get('/login', (req, res)=>{
-//     res.render('partial/small_login');
-// })
-// app.get('/login/loginAdmin', (req, res)=>{
-//     var admin = req.query.admin;
-//     const fire = firebase.getfireInstance();
-//     const result = fire.loginAdmin(admin[0], admin[1]);
-//     result
-//     .then(function(data){
-//         if(data === false){
-//             res.json({ data : false});
-//         }else{
-//             uid = data;
-//             res.json({ data : data });
-//         }
-//     })
-//     .then(error => console.log(error));
-// })
+    const fire = firebase.getfireInstance();
+    const result = fire.addAdmin(email, password, restaurant, cuisine, image, price_range, last_name, first_name, gender, state, 
+        address, city, postal_code)
+    result
+    .then( (data) => {
+        res.json({ data: data })
+    })
+    .then(error => console.log(error));
+})
+app.post('/login', (req, res)=>{
+    var email = req.body.email;
+    var password = req.body.password;
 
-// // sign up page
-// app.get('/signUp', (req, res)=>{
-//     res.render('partial/small_signup');
-// })
-// app.post('/signup/addAdmin', (req, res)=>{
-//     var admin = req.query.admin;
-//     const fire = firebase.getfireInstance();
-//     const result = fire.addAdmin(admin[0], admin[1], admin[2], admin[3], admin[4], admin[5], admin[6])
-//     result
-//     .then(function(data){
-//         res.json({ result: data })
-//     })
-//     .then(error => console.log(error));
-// })
+    const fire = firebase.getfireInstance();
+    const result = fire.loginAdmin(email, password);
+    result
+    .then( (data) => {
+        res.json({ data : data });
+    })
+    .then(error => console.log(error));
+})
+app.get('/getUser', (req, res)=>{
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser();
+    result
+    .then( (data) => {
+        res.json({ data : data });
+    })
+    .then(error => console.log(error));
+})
+
 
 // // admin page
 // app.get(`/admin_site`, (req, res)=>{

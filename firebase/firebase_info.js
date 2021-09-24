@@ -214,10 +214,9 @@ class firebaseServices{
             console.log(error);
         }
     }
-
-
     // adding admin
-    async addAdmin(email, password, restaurant, cuisine, image, start_time, end_time){
+    async addAdmin(email, password, restaurant, cuisine, image, price_range, last_name, first_name, gender, state, address, city, 
+        postal_code){
         try{
             const response = await new Promise((resolve, reject)=>{
                 firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -227,15 +226,23 @@ class firebaseServices{
                         user_restaurant : restaurant,
                         user_cuisine : cuisine,
                         user_image : image,
-                        user_start_time : start_time,
-                        user_end_time : end_time
+                        user_price_range : price_range,
+                        user_last_name : last_name,
+                        user_first_name : first_name,
+                        user_gender : gender,
+                        user_state : state,
+                        user_address : address,
+                        user_city : city,
+                        user_postal_code : postal_code,
+                        user_credit : "0.00"
                     }
                     const firestore = firebase.firestore();
                     firestore.collection('user').doc(firebase.auth().currentUser.uid).set(data);
-                    resolve("User Created");
+                    firebase.auth().signOut();
+                    resolve({message: "User Created Successfully", success: true});
                 })
                 .catch((error)=>{
-                    resolve(error.message);
+                    resolve({message: error.message, success: false});
                 })
             })
             return response;
@@ -249,10 +256,10 @@ class firebaseServices{
             const response = await new Promise((resolve, reject)=>{
                 firebase.auth().signInWithEmailAndPassword(email, password)
                 .then( (userCredit)=>{
-                    resolve(firebase.auth().currentUser.uid);
+                    resolve({message: "Login Successfully", success: true});
                 })
                 .catch((error)=>{
-                    resolve(false);
+                    resolve({message: error.message, success: false});
                 })
             })
             return response;
@@ -260,6 +267,23 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    // get user
+    async getUser(){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const auth = firebase.auth().currentUser
+                if(auth){
+                    resolve({success: true, id: auth.uid})
+                }else{
+                    resolve({success: false})
+                }
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+
     // checking authorised
     async findUser(id){
         try{
