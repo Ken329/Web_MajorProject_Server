@@ -156,9 +156,11 @@ app.post('/login', (req, res)=>{
     })
     .then(error => console.log(error));
 })
-app.get('/getUser', (req, res)=>{
+app.post('/getUser', (req, res)=>{
+    const uid = req.body.uid;
+
     const fire = firebase.getfireInstance();
-    const result = fire.getUser();
+    const result = fire.getUser(uid);
     result
     .then( (data) => {
         res.json({ data : data });

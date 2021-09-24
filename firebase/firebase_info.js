@@ -250,13 +250,12 @@ class firebaseServices{
             console.log(error);
         }
     }
-    // admin login
     async loginAdmin(email, password){
         try{
             const response = await new Promise((resolve, reject)=>{
                 firebase.auth().signInWithEmailAndPassword(email, password)
                 .then( (userCredit)=>{
-                    resolve({message: "Login Successfully", success: true});
+                    resolve({message: "Login Successfully", success: true, id: firebase.auth().currentUser.uid});
                 })
                 .catch((error)=>{
                     resolve({message: error.message, success: false});
@@ -267,16 +266,17 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    // get user
-    async getUser(){
+    async getUser(id){
         try{
             const response = await new Promise((resolve, reject)=>{
-                const auth = firebase.auth().currentUser
-                if(auth){
-                    resolve({success: true, id: auth.uid})
-                }else{
-                    resolve({success: false})
-                }
+                firestore.collection('user').where("user_id", "==", id).get()
+                .then(docs => {
+                    docs.forEach(doc => result.push(doc.data()));
+                    resolve({success: true, data: result});
+                })
+                .then((error)=>{
+                    resolve({success: false});
+                })
             })
             return response;
         }catch(error){
