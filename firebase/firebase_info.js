@@ -284,6 +284,23 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async getMenuWithId(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("order").get()
+                .then(docs => {
+                    docs.forEach( doc => result.push(doc.data()));
+                    resolve(result)
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+
 
     // checking authorised
     // async findUser(id){

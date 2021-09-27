@@ -156,6 +156,8 @@ app.post('/login', (req, res)=>{
     })
     .then(error => console.log(error));
 })
+
+// function wiht user login
 app.post('/getUser', (req, res)=>{
     const uid = req.body.uid;
 
@@ -167,6 +169,23 @@ app.post('/getUser', (req, res)=>{
             res.json({ success : false });
         }else{
             res.json({ success : true, data : data });
+        }
+    })
+    .then(error => console.log(error));
+})
+app.post('/getOrder', (req, res)=>{
+    const uid = req.body.uid;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(uid);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const menuResult = fire.getMenuWithId(uid);
+            menuResult
+            .then((data) => res.json({ success: true, data: data}))
         }
     })
     .then(error => console.log(error));
