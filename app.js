@@ -30,7 +30,6 @@ app.get('/getAllMenuRestaurant', (req, res) => {
 app.post('/getRestaurantMenuById', (req, res) => {
     const id = req.body.id;
     
-    console.log(id)
     const fire = firebase.getfireInstance();
     const result = fire.getMenuByrestaurantId(id);
     result
