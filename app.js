@@ -189,6 +189,39 @@ app.post('/getOrder', (req, res)=>{
     })
     .then(error => console.log(error));
 })
+app.post('/restaurantDineIn', (req, res) => {
+    const restaurantId = req.body.id;
+    const food = req.body.food;
+    const amount = req.body.amount;
+    const tableNo = req.body.tableNo;
+    const type = req.body.type;
+    const status = req.body.status;
+    const date = req.body.date;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.addRestaurantDineIn(restaurantId, food, amount, tableNo, type, status, date);
+    result
+    .then( (data) => {
+        res.json({data: "Order has been made"});
+    })
+    .then(error => console.log(error));
+})
+app.post('/restaurantTakeAway', (req, res) => {
+    const restaurantId = req.body.id;
+    const food = req.body.food;
+    const amount = req.body.amount;
+    const type = req.body.type;
+    const status = req.body.status;
+    const date = req.body.date;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.addRestaurantTakeAway(restaurantId, food, amount, type, status, date);
+    result
+    .then( (data) => {
+        res.json({data: "Order has been made"});
+    })
+    .then(error => console.log(error));
+})
 
 
 // // admin page

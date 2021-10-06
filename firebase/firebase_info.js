@@ -300,6 +300,49 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async addRestaurantDineIn(id, food, amount, tableNo, type, status, date){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    order_food : food,
+                    order_amount : amount,
+                    order_no : tableNo,
+                    order_type : type,
+                    order_status : status,
+                    order_date : date
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection('order').add(data)
+                .then((data) => {
+                    resolve(data);  
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async addRestaurantTakeAway(id, food, amount, type, status, date){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    order_food : food,
+                    order_amount : amount,
+                    order_type : type,
+                    order_status : status,
+                    order_date : date
+                }
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection('order').add(data)
+                .then((data) => {
+                    resolve(data);  
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
 
 
     // checking authorised
