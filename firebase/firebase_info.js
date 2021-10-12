@@ -343,6 +343,25 @@ class firebaseServices{
             console.log(error);
         }
     }
+    async getMenuWithIdNdate(id, date){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("order").where("order_date", "==", date).get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        result.push(doc.id)
+                        result.push(doc.data())
+                    });
+                    resolve(result)
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
 
     // checking authorised

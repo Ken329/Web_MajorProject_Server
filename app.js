@@ -222,6 +222,24 @@ app.post('/restaurantTakeAway', (req, res) => {
     })
     .then(error => console.log(error));
 })
+app.post('/getOrderWithIdNDate', (req, res) => {
+    const id = req.body.id;
+    const date = req.body.date;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const menuResult = fire.getMenuWithIdNdate(id, date);
+            menuResult
+            .then((data) => res.json({ success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 
 
 // // admin page
