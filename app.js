@@ -102,7 +102,7 @@ app.post('/dineInFromRestaurant', (req, res) => {
 app.post('/trackOrderWithId', (req, res) => {
     const restaurantId = req.body.restaurantId;
     const orderId = req.body.orderId;
-
+    
     const fire = firebase.getfireInstance();
     const result = fire.trackOrderWithId(restaurantId, orderId);
     result
@@ -191,6 +191,7 @@ app.post('/getOrder', (req, res)=>{
 })
 app.post('/restaurantDineIn', (req, res) => {
     const restaurantId = req.body.id;
+    const orderId = req.body.orderId;
     const food = req.body.food;
     const amount = req.body.amount;
     const tableNo = req.body.tableNo;
@@ -199,7 +200,7 @@ app.post('/restaurantDineIn', (req, res) => {
     const date = req.body.date;
     
     const fire = firebase.getfireInstance();
-    const result = fire.addRestaurantDineIn(restaurantId, food, amount, tableNo, type, status, date);
+    const result = fire.addRestaurantDineIn(restaurantId, orderId, food, amount, tableNo, type, status, date);
     result
     .then( (data) => {
         res.json({data: "Order has been made"});
@@ -208,6 +209,7 @@ app.post('/restaurantDineIn', (req, res) => {
 })
 app.post('/restaurantTakeAway', (req, res) => {
     const restaurantId = req.body.id;
+    const orderId = req.body.orderId;
     const food = req.body.food;
     const amount = req.body.amount;
     const type = req.body.type;
@@ -215,7 +217,7 @@ app.post('/restaurantTakeAway', (req, res) => {
     const date = req.body.date;
     
     const fire = firebase.getfireInstance();
-    const result = fire.addRestaurantTakeAway(restaurantId, food, amount, type, status, date);
+    const result = fire.addRestaurantTakeAway(restaurantId, orderId, food, amount, type, status, date);
     result
     .then( (data) => {
         res.json({data: "Order has been made"});
@@ -236,6 +238,24 @@ app.post('/getOrderWithIdNDate', (req, res) => {
             const menuResult = fire.getMenuWithIdNdate(id, date);
             menuResult
             .then((data) => res.json({ success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+app.post('/trackOrderWithOrderId', (req, res) => {
+    const id = req.body.id;
+    const orderId = req.body.orderId;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.trackOrderWithId(id, orderId);
+            result
+            .then((data) => res.json({success: true, data: data}))
         }
     })
     .then(error => console.log(error));

@@ -204,6 +204,7 @@ class firebaseServices{
                 .then(docs => {
                     docs.forEach( doc => {
                         if(foodId.includes(doc.id)){
+                            console.log(doc.data())
                             result.push(doc.data());
                         }
                     });
@@ -300,10 +301,11 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    async addRestaurantDineIn(id, food, amount, tableNo, type, status, date){
+    async addRestaurantDineIn(id, orderId, food, amount, tableNo, type, status, date){
         try{
             const response = await new Promise((resolve, reject)=>{
                 const data = {
+                    order_id: orderId,
                     order_food : food,
                     order_amount : amount,
                     order_no : tableNo,
@@ -312,7 +314,7 @@ class firebaseServices{
                     order_date : date
                 }
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection('order').add(data)
+                firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
                 .then((data) => {
                     resolve(data);  
                 })
@@ -322,10 +324,11 @@ class firebaseServices{
             console.log(error);
         }
     }
-    async addRestaurantTakeAway(id, food, amount, type, status, date){
+    async addRestaurantTakeAway(id, orderId, food, amount, type, status, date){
         try{
             const response = await new Promise((resolve, reject)=>{
                 const data = {
+                    order_id: orderId,
                     order_food : food,
                     order_amount : amount,
                     order_type : type,
@@ -333,7 +336,7 @@ class firebaseServices{
                     order_date : date
                 }
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection('order').add(data)
+                firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
                 .then((data) => {
                     resolve(data);  
                 })
@@ -351,7 +354,6 @@ class firebaseServices{
                 firestore.collection('user').doc(id).collection("order").where("order_date", "==", date).get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        result.push(doc.id)
                         result.push(doc.data())
                     });
                     resolve(result)
