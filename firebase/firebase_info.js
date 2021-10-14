@@ -301,7 +301,7 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    async addRestaurantDineIn(id, orderId, food, amount, tableNo, type, status, date){
+    async addRestaurantDineIn(id, orderId, food, amount, tableNo, type, status){
         try{
             const response = await new Promise((resolve, reject)=>{
                 const data = {
@@ -311,7 +311,7 @@ class firebaseServices{
                     order_no : tableNo,
                     order_type : type,
                     order_status : status,
-                    order_date : date
+                    order_date : firebase.firestore.Timestamp.fromDate(new Date())
                 }
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
@@ -324,7 +324,7 @@ class firebaseServices{
             console.log(error);
         }
     }
-    async addRestaurantTakeAway(id, orderId, food, amount, type, status, date){
+    async addRestaurantTakeAway(id, orderId, food, amount, type, status){
         try{
             const response = await new Promise((resolve, reject)=>{
                 const data = {
@@ -333,7 +333,7 @@ class firebaseServices{
                     order_amount : amount,
                     order_type : type,
                     order_status : status,
-                    order_date : date
+                    order_date : firebase.firestore.Timestamp.fromDate(new Date())
                 }
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
@@ -358,6 +358,37 @@ class firebaseServices{
                     });
                     resolve(result)
                 })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async updateOrderDetail(id, orderId, orderDetail){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("order").doc(orderId).update(orderDetail);
+                resolve("Updated Successfully")
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async getTableWithId(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("table").get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        result.push(doc.data())
+                    });
+                    resolve(result)
+                })
+                resolve(result)
             })
             return response;
         }catch(error){
