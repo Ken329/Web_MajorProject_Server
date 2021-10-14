@@ -126,7 +126,7 @@ class firebaseServices{
             console.log(error);
         }
     }
-    async addNewOrderTakeAway(orderId, id, food, amount, customer, phone, email, type, status, method, date){
+    async addNewOrderTakeAway(orderId, id, food, amount, customer, phone, email, type, status, method){
         try{
             const response = await new Promise((resolve, reject)=>{
                 const data = {
@@ -139,7 +139,7 @@ class firebaseServices{
                     order_type : type,
                     order_status : status,
                     order_method : method,
-                    order_date : date
+                    order_date : firebase.firestore.Timestamp.fromDate(new Date())
                 }
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
@@ -152,7 +152,7 @@ class firebaseServices{
             console.log(error);
         }
     }
-    async addNewOrderDineIn(orderId, id, food, amount, customer, tableNo, phone, email, type, status, method, date){
+    async addNewOrderDineIn(orderId, id, food, amount, customer, tableNo, phone, email, type, status, method){
         try{
             const response = await new Promise((resolve, reject)=>{
                 const data = {
@@ -166,7 +166,7 @@ class firebaseServices{
                     order_type : type,
                     order_status : status,
                     order_method : method,
-                    order_date : date
+                    order_date : firebase.firestore.Timestamp.fromDate(new Date())
                 }
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
@@ -204,7 +204,6 @@ class firebaseServices{
                 .then(docs => {
                     docs.forEach( doc => {
                         if(foodId.includes(doc.id)){
-                            console.log(doc.data())
                             result.push(doc.data());
                         }
                     });
@@ -346,15 +345,19 @@ class firebaseServices{
             console.log(error);
         }
     }
-    async getMenuWithIdNdate(id, date){
+    async getMenuWithIdNdate(id){
         try{
             const response = await new Promise((resolve, reject)=>{
                 let result = [];
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection("order").where("order_date", "==", date).get()
+                firestore.collection('user').doc(id).collection("order").get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        result.push(doc.data())
+                        const date = new Date(doc.data().order_date.seconds * 1000).toLocaleDateString();
+                        var today = new Date().toLocaleDateString();
+                        if(date === today){
+                            result.push(doc.data())
+                        }
                     });
                     resolve(result)
                 })

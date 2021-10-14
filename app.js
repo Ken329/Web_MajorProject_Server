@@ -222,7 +222,6 @@ app.post('/restaurantTakeAway', (req, res) => {
 })
 app.post('/getOrderWithIdNDate', (req, res) => {
     const id = req.body.id;
-    const date = req.body.date;
 
     const fire = firebase.getfireInstance();
     const result = fire.getUser(id);
@@ -231,7 +230,7 @@ app.post('/getOrderWithIdNDate', (req, res) => {
         if(data.length === 0){
             res.json({ success : false });
         }else{
-            const menuResult = fire.getMenuWithIdNdate(id, date);
+            const menuResult = fire.getMenuWithIdNdate(id);
             menuResult
             .then((data) => res.json({ success: true, data: data}))
         }
