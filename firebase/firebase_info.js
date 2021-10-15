@@ -284,22 +284,6 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    async getMenuWithId(id){
-        try{
-            const response = await new Promise((resolve, reject)=>{
-                let result = [];
-                const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection("order").get()
-                .then(docs => {
-                    docs.forEach( doc => result.push(doc.data()));
-                    resolve(result)
-                })
-            })
-            return response;
-        }catch(error){
-            console.log(error.message);
-        }
-    }
     async addRestaurantDineIn(id, orderId, food, amount, tableNo, type, status){
         try{
             const response = await new Promise((resolve, reject)=>{
@@ -345,7 +329,7 @@ class firebaseServices{
             console.log(error);
         }
     }
-    async getMenuWithIdNdate(id){
+    async getOrderWithIdNDate(id){
         try{
             const response = await new Promise((resolve, reject)=>{
                 let result = [];
@@ -390,7 +374,6 @@ class firebaseServices{
                     status : status,
                     date : firebase.firestore.Timestamp.fromDate(new Date(date))
                 }
-                console.log(data)
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection('table').doc(tableId).set(data)
                 resolve("Inserted Successfully")
@@ -405,7 +388,7 @@ class firebaseServices{
             const response = await new Promise((resolve, reject)=>{
                 let result = [];
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection("table").get()
+                firestore.collection('user').doc(id).collection("table").where("status", "!=", "decline").get()
                 .then(docs => {
                     docs.forEach( doc => {
                         const date = new Date(doc.data().date.seconds * 1000).toLocaleDateString();
@@ -422,9 +405,18 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    async updateTableStatus(id, tableId, data){
+    async updateTableStatus(id, tableId, name, pax, phone, date, status){
         try{
             const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    id: tableId,
+                    name : name,
+                    phone : phone,
+                    pax : pax,
+                    status : status,
+                    date : firebase.firestore.Timestamp.fromDate(new Date(date))
+                }
+                console.log(data)
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection("table").doc(tableId).update(data);
                 resolve("Updated Successfully")

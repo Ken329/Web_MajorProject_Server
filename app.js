@@ -185,23 +185,6 @@ app.post('/getUser', (req, res)=>{
     })
     .then(error => console.log(error));
 })
-app.post('/getOrder', (req, res)=>{
-    const uid = req.body.uid;
-
-    const fire = firebase.getfireInstance();
-    const result = fire.getUser(uid);
-    result
-    .then( (data) => {
-        if(data.length === 0){
-            res.json({ success : false });
-        }else{
-            const menuResult = fire.getMenuWithId(uid);
-            menuResult
-            .then((data) => res.json({ success: true, data: data}))
-        }
-    })
-    .then(error => console.log(error));
-})
 app.post('/restaurantDineIn', (req, res) => {
     const restaurantId = req.body.id;
     const orderId = req.body.orderId;
@@ -245,7 +228,7 @@ app.post('/getOrderWithIdNDate', (req, res) => {
         if(data.length === 0){
             res.json({ success : false });
         }else{
-            const menuResult = fire.getMenuWithIdNdate(id);
+            const menuResult = fire.getOrderWithIdNDate(id);
             menuResult
             .then((data) => res.json({ success: true, data: data}))
         }
@@ -309,7 +292,11 @@ app.post('/getTableWithIdNDate', (req, res) => {
 app.put('/updateTableStatus', (req, res) => {
     const id = req.body.id;
     const tableId = req.body.tableId;
-    const tableDetail = req.body.data;
+    const name = req.body.name;
+    const pax = req.body.pax;
+    const phone = req.body.phone;
+    const date = req.body.date;
+    const status = req.body.status;
     
     const fire = firebase.getfireInstance();
     const result = fire.getUser(id);
@@ -318,7 +305,7 @@ app.put('/updateTableStatus', (req, res) => {
         if(data.length === 0){
             res.json({ success : false });
         }else{
-            const result = fire.updateTableStatus(id, tableId, tableDetail);
+            const result = fire.updateTableStatus(id, tableId, name, pax, phone, date, status);
             result
             .then((data) => res.json({success: true, data: data}))
         }
