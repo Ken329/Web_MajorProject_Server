@@ -379,7 +379,28 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    async getTableWithId(id){
+    async insertNewTable(id, tableId, name, phone, pax, status, date){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const data = {
+                    id: tableId,
+                    name : name,
+                    phone : phone,
+                    pax : pax,
+                    status : status,
+                    date : firebase.firestore.Timestamp.fromDate(new Date(date))
+                }
+                console.log(data)
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection('table').doc(tableId).set(data)
+                resolve("Inserted Successfully")
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async getTableWithIdNDate(id){
         try{
             const response = await new Promise((resolve, reject)=>{
                 let result = [];
@@ -387,11 +408,27 @@ class firebaseServices{
                 firestore.collection('user').doc(id).collection("table").get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        result.push(doc.data())
+                        const date = new Date(doc.data().date.seconds * 1000).toLocaleDateString();
+                        var today = new Date().toLocaleDateString();
+                        if(date >= today){
+                            result.push(doc.data())
+                        }
                     });
                     resolve(result)
-                })
-                resolve(result)
+                });
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async updateTableStatus(id, tableId, data){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("table").doc(tableId).update(data);
+                resolve("Updated Successfully")
+                
             })
             return response;
         }catch(error){

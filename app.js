@@ -97,6 +97,21 @@ app.post('/dineInFromRestaurant', (req, res) => {
     .then((data) => res.json({data: data}))
     .then(error => console.log(error));
 })
+app.post('/insertNewTable', (req, res) => {
+    const id = req.body.id;
+    const tableId = req.body.tableId;
+    const name = req.body.name;
+    const phone = req.body.phone;
+    const pax = req.body.pax;
+    const status = req.body.status;
+    const date = req.body.date;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.insertNewTable(id, tableId, name, phone, pax, status, date);
+    result
+    .then(data => res.json({data: data}))
+    .then(error => console.log(error));
+})
 app.post('/trackOrderWithId', (req, res) => {
     const restaurantId = req.body.restaurantId;
     const orderId = req.body.orderId;
@@ -274,7 +289,7 @@ app.put('/updateOrderStatus', (req, res) => {
     })
     .then(error => console.log(error));
 })
-app.post('/getTableWithId', (req, res) => {
+app.post('/getTableWithIdNDate', (req, res) => {
     const id = req.body.id;
 
     const fire = firebase.getfireInstance();
@@ -284,7 +299,26 @@ app.post('/getTableWithId', (req, res) => {
         if(data.length === 0){
             res.json({ success : false });
         }else{
-            const result = fire.getTableWithId(id);
+            const result = fire.getTableWithIdNDate(id);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+app.put('/updateTableStatus', (req, res) => {
+    const id = req.body.id;
+    const tableId = req.body.tableId;
+    const tableDetail = req.body.data;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.updateTableStatus(id, tableId, tableDetail);
             result
             .then((data) => res.json({success: true, data: data}))
         }
