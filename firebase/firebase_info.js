@@ -351,11 +351,35 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    async updateOrderDetail(id, orderId, orderDetail){
+    async getOrderWithId(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("order").get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        const date = new Date(doc.data().order_date.seconds * 1000).toLocaleDateString();
+                        var today = new Date().toLocaleDateString();
+                        if(date < today){
+                            result.push(doc.data())
+                        }
+                    });
+                    resolve(result)
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async updateOrderDetail(id, orderId, status){
         try{
             const response = await new Promise((resolve, reject)=>{
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection("order").doc(orderId).update(orderDetail);
+                firestore.collection('user').doc(id).collection("order").doc(orderId).update({
+                    order_status: status
+                })
                 resolve("Updated Successfully")
             })
             return response;
@@ -399,6 +423,28 @@ class firebaseServices{
                     });
                     resolve(result)
                 });
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async getTableWithId(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = [];
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("table").get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        const date = new Date(doc.data().date.seconds * 1000).toLocaleDateString();
+                        var today = new Date().toLocaleDateString();
+                        if(date < today){
+                            result.push(doc.data())
+                        }
+                    });
+                    resolve(result)
+                })
             })
             return response;
         }catch(error){

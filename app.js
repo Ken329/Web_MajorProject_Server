@@ -235,6 +235,23 @@ app.post('/getOrderWithIdNDate', (req, res) => {
     })
     .then(error => console.log(error));
 })
+app.post('/getOrderWithId', (req, res) => {
+    const id = req.body.id;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const menuResult = fire.getOrderWithId(id);
+            menuResult
+            .then((data) => res.json({ success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 app.post('/trackOrderWithOrderId', (req, res) => {
     const id = req.body.id;
     const orderId = req.body.orderId;
@@ -256,7 +273,7 @@ app.post('/trackOrderWithOrderId', (req, res) => {
 app.put('/updateOrderStatus', (req, res) => {
     const id = req.body.id;
     const orderId = req.body.orderId;
-    const orderDetail = req.body.orderDetail;
+    const status = req.body.status;
 
     const fire = firebase.getfireInstance();
     const result = fire.getUser(id);
@@ -265,7 +282,7 @@ app.put('/updateOrderStatus', (req, res) => {
         if(data.length === 0){
             res.json({ success : false });
         }else{
-            const result = fire.updateOrderDetail(id, orderId, orderDetail);
+            const result = fire.updateOrderDetail(id, orderId, status);
             result
             .then((data) => res.json({success: true, data: data}))
         }
@@ -285,6 +302,23 @@ app.post('/getTableWithIdNDate', (req, res) => {
             const result = fire.getTableWithIdNDate(id);
             result
             .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+app.post('/getTableWithId', (req, res) => {
+    const id = req.body.id;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const menuResult = fire.getTableWithId(id);
+            menuResult
+            .then((data) => res.json({ success: true, data: data}))
         }
     })
     .then(error => console.log(error));
