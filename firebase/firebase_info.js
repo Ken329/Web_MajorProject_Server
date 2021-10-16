@@ -451,22 +451,39 @@ class firebaseServices{
             console.log(error.message);
         }
     }
-    async updateTableStatus(id, tableId, name, pax, phone, date, status){
+    async updateTableStatus(id, tableId, status){
         try{
             const response = await new Promise((resolve, reject)=>{
-                const data = {
-                    id: tableId,
-                    name : name,
-                    phone : phone,
-                    pax : pax,
-                    status : status,
-                    date : firebase.firestore.Timestamp.fromDate(new Date(date))
-                }
-                console.log(data)
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection("table").doc(tableId).update(data);
+                firestore.collection('user').doc(id).collection("table").doc(tableId).update({
+                    status: status
+                })
                 resolve("Updated Successfully")
                 
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async deleteOrderData(id, orderId){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("order").doc(orderId).delete()
+                resolve("Deleted Successfully")
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async deleteTableData(id, tableId){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("table").doc(tableId).delete()
+                resolve("Deleted Successfully")
             })
             return response;
         }catch(error){

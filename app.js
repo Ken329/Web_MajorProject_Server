@@ -289,6 +289,24 @@ app.put('/updateOrderStatus', (req, res) => {
     })
     .then(error => console.log(error));
 })
+app.post('/deleteOrderData', (req, res) => {
+    const id = req.body.id;
+    const orderId = req.body.orderId;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const menuResult = fire.deleteOrderData(id, orderId);
+            menuResult
+            .then((data) => res.json({ success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 app.post('/getTableWithIdNDate', (req, res) => {
     const id = req.body.id;
 
@@ -326,10 +344,6 @@ app.post('/getTableWithId', (req, res) => {
 app.put('/updateTableStatus', (req, res) => {
     const id = req.body.id;
     const tableId = req.body.tableId;
-    const name = req.body.name;
-    const pax = req.body.pax;
-    const phone = req.body.phone;
-    const date = req.body.date;
     const status = req.body.status;
     
     const fire = firebase.getfireInstance();
@@ -339,9 +353,27 @@ app.put('/updateTableStatus', (req, res) => {
         if(data.length === 0){
             res.json({ success : false });
         }else{
-            const result = fire.updateTableStatus(id, tableId, name, pax, phone, date, status);
+            const result = fire.updateTableStatus(id, tableId, status);
             result
             .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+app.post('/deleteTableData', (req, res) => {
+    const id = req.body.id;
+    const tableId = req.body.tableId;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const menuResult = fire.deleteTableData(id, tableId);
+            menuResult
+            .then((data) => res.json({ success: true, data: data}))
         }
     })
     .then(error => console.log(error));
