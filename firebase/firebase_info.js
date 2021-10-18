@@ -439,7 +439,7 @@ class firebaseServices{
                     docs.forEach( doc => {
                         const date = new Date(doc.data().date.seconds * 1000).toLocaleDateString();
                         var today = new Date().toLocaleDateString();
-                        if(date < today){
+                        if(date < today || doc.data().status === "decline"){
                             result.push(doc.data())
                         }
                     });
