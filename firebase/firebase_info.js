@@ -490,6 +490,36 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async updateMenuDiscount(id, menuId, discount){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("menu").doc(menuId).update({
+                    food_discount: discount
+                })
+                resolve("Updated Successfully")
+                
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async updateMenuAvailable(id, menuId, available){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("menu").doc(menuId).update({
+                    food_available: available
+                })
+                resolve("Updated Successfully")
+                
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
 
     // checking authorised

@@ -169,7 +169,7 @@ app.post('/login', (req, res)=>{
     .then(error => console.log(error));
 })
 
-// function wiht user login
+// checking user accessibility - admin
 app.post('/getUser', (req, res)=>{
     const uid = req.body.uid;
 
@@ -185,6 +185,7 @@ app.post('/getUser', (req, res)=>{
     })
     .then(error => console.log(error));
 })
+// restaurant ordering api - admin
 app.post('/restaurantDineIn', (req, res) => {
     const restaurantId = req.body.id;
     const orderId = req.body.orderId;
@@ -218,6 +219,7 @@ app.post('/restaurantTakeAway', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// getting order api - admin
 app.post('/getOrderWithIdNDate', (req, res) => {
     const id = req.body.id;
 
@@ -252,6 +254,7 @@ app.post('/getOrderWithId', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// tracking order api - admin
 app.post('/trackOrderWithOrderId', (req, res) => {
     const id = req.body.id;
     const orderId = req.body.orderId;
@@ -270,6 +273,7 @@ app.post('/trackOrderWithOrderId', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// update order api - admin
 app.put('/updateOrderStatus', (req, res) => {
     const id = req.body.id;
     const orderId = req.body.orderId;
@@ -289,6 +293,7 @@ app.put('/updateOrderStatus', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// delete order api - admin
 app.post('/deleteOrderData', (req, res) => {
     const id = req.body.id;
     const orderId = req.body.orderId;
@@ -307,6 +312,7 @@ app.post('/deleteOrderData', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// getting table api - admin
 app.post('/getTableWithIdNDate', (req, res) => {
     const id = req.body.id;
 
@@ -341,6 +347,7 @@ app.post('/getTableWithId', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// update table api - admin
 app.put('/updateTableStatus', (req, res) => {
     const id = req.body.id;
     const tableId = req.body.tableId;
@@ -360,6 +367,7 @@ app.put('/updateTableStatus', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// delete table api - admin
 app.post('/deleteTableData', (req, res) => {
     const id = req.body.id;
     const tableId = req.body.tableId;
@@ -378,6 +386,46 @@ app.post('/deleteTableData', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// update menu api - admin
+app.put('/updateMenuDiscount', (req, res) => {
+    const id = req.body.id;
+    const menuId = req.body.menuId;
+    const discount = req.body.discount;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.updateMenuDiscount(id, menuId, discount);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+app.put('/updateMenuAvailable', (req, res) => {
+    const id = req.body.id;
+    const menuId = req.body.menuId;
+    const available = req.body.available;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.updateMenuAvailable(id, menuId, available);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+
 
 
 // // admin page
