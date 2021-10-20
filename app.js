@@ -386,6 +386,25 @@ app.post('/deleteTableData', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// insert menu api
+app.post('/insertNewMenu', (req, res) => {
+    const id = req.body.id;
+    const menu = req.body.menu;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.insertNewMenu(id, menu);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 // update menu api - admin
 app.put('/updateMenuDiscount', (req, res) => {
     const id = req.body.id;

@@ -490,6 +490,18 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async insertNewMenu(id, menu){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("menu").add(menu);
+                resolve("Inserted Successfully");
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
     async updateMenuDiscount(id, menuId, discount){
         try{
             const response = await new Promise((resolve, reject)=>{
