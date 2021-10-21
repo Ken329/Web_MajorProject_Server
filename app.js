@@ -444,6 +444,44 @@ app.put('/updateMenuAvailable', (req, res) => {
     })
     .then(error => console.log(error));
 })
+app.put('/updateMenuDetail', (req, res) => {
+    const id = req.body.id;
+    const menuId = req.body.menuId;
+    const detail = req.body.detail;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.updateMenuDetail(id, menuId, detail);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+// delete menu api - admin
+app.post('/deleteMenuDetail', (req, res) => {
+    const id = req.body.id;
+    const menuId = req.body.menuId;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.deleteMenuDetail(id, menuId);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 
 
 

@@ -532,6 +532,32 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async updateMenuDetail(id, menuId, detail){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("menu").doc(menuId).update(detail)
+                resolve("Updated Successfully")
+                
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async deleteMenuDetail(id, menuId){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("menu").doc(menuId).delete();
+                resolve("Deleted Successfully")
+                
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
 
     // checking authorised
