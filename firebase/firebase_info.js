@@ -558,6 +558,61 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async getAllGenerateData(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                let result = [];
+                firestore.collection('user').doc(id).collection("generate").get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        result.push(doc.id);
+                        result.push(doc.data());
+                    });
+                    resolve(result);
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async insertGenerateData(id, tableDetail){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("generate").add(tableDetail)
+                resolve("Inserted Successfully");
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async updateGenerateData(id, tableId, tableDetail){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("generate").doc(tableId).update(tableDetail)
+                resolve("Updated Successfully");
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async deleteGenerateData(id, tableId){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                firestore.collection('user').doc(id).collection("generate").doc(tableId).delete();
+                resolve("Deleted Successfully");
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
 
     // checking authorised

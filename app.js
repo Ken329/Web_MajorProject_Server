@@ -482,7 +482,82 @@ app.post('/deleteMenuDetail', (req, res) => {
     })
     .then(error => console.log(error));
 })
-
+// get generate api - admin
+app.post('/getAllGenerateData', (req, res) => {
+    const id = req.body.id;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.getAllGenerateData(id);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+// insert generate api - admin
+app.post('/insertGenerateData', (req, res) => {
+    const id = req.body.id;
+    const tableDetail = req.body.tableDetail;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.insertGenerateData(id, tableDetail);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+// update generate api - admin
+app.put('/updateGenerateData', (req, res) => {
+    const id = req.body.id;
+    const tableId = req.body.tableId;
+    const tableDetail = req.body.tableDetail;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.updateGenerateData(id, tableId, tableDetail);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
+// delete generate api - admin
+app.post('/deleteGenerateData', (req, res) => {
+    const id = req.body.id;
+    const tableId = req.body.tableId;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.deleteGenerateData(id, tableId);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 
 
 // // admin page
