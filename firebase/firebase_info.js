@@ -563,7 +563,7 @@ class firebaseServices{
             const response = await new Promise((resolve, reject)=>{
                 const firestore = firebase.firestore();
                 let result = [];
-                firestore.collection('user').doc(id).collection("generate").get()
+                firestore.collection('user').doc(id).collection("generate").orderBy("table_no").get()
                 .then(docs => {
                     docs.forEach( doc => {
                         result.push(doc.id);
