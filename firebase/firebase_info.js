@@ -613,6 +613,24 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async getAllOrder(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                let result = [];
+                firestore.collection('user').doc(id).collection("order").get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        result.push(doc.data().order_food);
+                    });
+                    resolve(result);
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
 
     // checking authorised

@@ -558,6 +558,24 @@ app.post('/deleteGenerateData', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// get all order data
+app.post('/getAllOrder', (req, res) => {
+    const id = req.body.id;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.getAllOrder(id);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 
 
 // // admin page
