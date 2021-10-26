@@ -266,6 +266,22 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async resetPassword(email){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                firebase.auth().sendPasswordResetEmail(email)
+                .then( ()=>{
+                    resolve({success: true, message:"Reset Email has been sent"});
+                })
+                .catch((error)=>{
+                    resolve({message: error.message, success: false});
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
     // function with user id and api checked
     async getUser(id){

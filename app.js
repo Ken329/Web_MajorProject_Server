@@ -4,7 +4,6 @@ const firebase = require("./firebase/firebase_info");
 const cors = require("cors")
 const app = express();
 const port = process.env.PORT || 4000;
-var uid = 0;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -162,6 +161,17 @@ app.post('/login', (req, res)=>{
 
     const fire = firebase.getfireInstance();
     const result = fire.loginAdmin(email, password);
+    result
+    .then( (data) => {
+        res.json({ data : data });
+    })
+    .then(error => console.log(error));
+})
+app.post('/resetPassword', (req, res)=>{
+    var email = req.body.email;
+
+    const fire = firebase.getfireInstance();
+    const result = fire.resetPassword(email);
     result
     .then( (data) => {
         res.json({ data : data });
