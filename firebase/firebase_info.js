@@ -631,6 +631,19 @@ class firebaseServices{
             console.log(error.message);
         }
     }
+    async updateUserProfile(id, profile){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                let result = [];
+                firestore.collection('user').doc(id).update(profile);
+                resolve("Updated Successfully");
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
 
     // checking authorised

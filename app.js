@@ -576,6 +576,25 @@ app.post('/getAllOrder', (req, res) => {
     })
     .then(error => console.log(error));
 })
+// update user profile - admin
+app.put('/updateUserProfile', (req, res) => {
+    const id = req.body.id;
+    const profile = req.body.profile;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.updateUserProfile(id, profile);
+            result
+            .then((data) => res.json({success: true, data: data}))
+        }
+    })
+    .then(error => console.log(error));
+})
 
 
 // // admin page
