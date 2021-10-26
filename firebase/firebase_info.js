@@ -634,6 +634,24 @@ class firebaseServices{
             const response = await new Promise((resolve, reject)=>{
                 const firestore = firebase.firestore();
                 let result = [];
+                firestore.collection('user').doc(id).collection("order").orderBy("order_date").get()
+                .then(docs => {
+                    docs.forEach( doc => {
+                        result.push(doc.data());
+                    });
+                    resolve(result);
+                })
+            })
+            return response;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+    async getAllFilteringOrder(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                const firestore = firebase.firestore();
+                let result = [];
                 firestore.collection('user').doc(id).collection("order").get()
                 .then(docs => {
                     docs.forEach( doc => {

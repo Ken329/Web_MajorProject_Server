@@ -581,7 +581,92 @@ app.post('/getAllOrder', (req, res) => {
         }else{
             const result = fire.getAllOrder(id);
             result
-            .then((data) => res.json({success: true, data: data}))
+            .then((data) => {
+                var newResult = [];
+                for(var i = 0; i < data.length; i++){
+                    var dateResult = [];
+                    var j = 0;
+                    for(j = i; j < data.length; j++){
+                        if(new Date(data[i].order_date.seconds * 1000).toLocaleDateString() === 
+                        new Date(data[j].order_date.seconds * 1000).toLocaleDateString()){
+                            dateResult.push(data[j]);
+                        }else{
+                            break;
+                        }
+                    }
+                    var myData = {
+                        date: new Date(data[i].order_date.seconds * 1000).toLocaleDateString(),
+                        data: dateResult
+                    }
+                    newResult.push(myData);
+                    i = j - 1;
+                }
+                res.json({success: true, data: newResult});
+            })
+        }
+    })
+    .then(error => console.log(error));
+})
+app.post('/getAllFilteringOrder', (req, res) => {
+    const id = req.body.id;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.getAllFilteringOrder(id);
+            result
+            .then((data) => {
+                var result = [];
+                for(var i = 0; i < data.length; i++){
+                    var myData = JSON.parse(data[i]).food;
+                    for(var j = 0; j < myData.length; j++){
+                        var index = result.findIndex(detail => detail.id === myData[j].id);
+                        if(index < 0){
+                            result.push(myData[j]);
+                        }else{
+                            result[index].quantity += myData[j].quantity;
+                        }
+                    }
+                }
+                res.json({success: true, data: result})
+            })
+        }
+    })
+    .then(error => console.log(error));
+})
+// get filter sold cuisine
+app.post('/getSoldCuisine', (req, res) => {
+    const id = req.body.id;
+    const food = req.body.food;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getUser(id);
+    result
+    .then( (data) => {
+        if(data.length === 0){
+            res.json({ success : false });
+        }else{
+            const result = fire.getAllOrder(id);
+            result
+            .then((data) => {
+                var result = [];
+                for(var i = 0; i < data.length; i++){
+                    var myData = JSON.parse(data[i]).food;
+                    for(var j = 0; j < myData.length; j++){
+                        var index = result.findIndex(detail => detail.id === myData[j].id);
+                        if(index < 0){
+                            result.push(myData[j]);
+                        }else{
+                            result[index].quantity += myData[j].quantity;
+                        }
+                    }
+                }
+                res.json({success: true, data: result})
+            })
         }
     })
     .then(error => console.log(error));
