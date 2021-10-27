@@ -595,7 +595,7 @@ app.post('/getAllOrder', (req, res) => {
                         }
                     }
                     var myData = {
-                        date: new Date(data[i].order_date.seconds * 1000).toLocaleDateString(),
+                        date: data[i].order_date.seconds,
                         data: dateResult
                     }
                     newResult.push(myData);
