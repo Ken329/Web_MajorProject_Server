@@ -428,7 +428,7 @@ class firebaseServices{
             const response = await new Promise((resolve, reject)=>{
                 let result = [];
                 const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).collection("table").where("status", "!=", "decline").orderBy("date").get()
+                firestore.collection('user').doc(id).collection("table").where("status", "!=", "decline").get()
                 .then(docs => {
                     docs.forEach( doc => {
                         const date = new Date(doc.data().date.seconds * 1000).toLocaleDateString();
