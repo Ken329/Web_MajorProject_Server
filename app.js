@@ -26,6 +26,15 @@ app.get('/getAllMenuRestaurant', (req, res) => {
     .then((data) => res.json({data: data}))
     .then(error => console.log(error));
 })
+app.post('/getRestaurantById', (req, res) => {
+    const id = req.body.id;
+    
+    const fire = firebase.getfireInstance();
+    const result = fire.getRestaurantByIdCustomer(id);
+    result
+    .then((data) => res.json(data))
+    .then(error => console.log(error));
+})
 app.post('/getRestaurantMenuById', (req, res) => {
     const id = req.body.id;
     

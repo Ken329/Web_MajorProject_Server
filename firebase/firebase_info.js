@@ -44,6 +44,30 @@ class firebaseServices{
             console.log(error);
         }
     }
+    async getRestaurantByIdCustomer(id){
+        try{
+            const response = await new Promise((resolve, reject)=>{
+                let result = {};
+                const firestore = firebase.firestore();
+                firestore.collection('user').where("user_id", "==", id).get()
+                .then(docs => {
+                    docs.forEach( doc => {     
+                        result = {
+                            cuisine: doc.data().user_cuisine,
+                            range: doc.data().user_price_range,
+                            name: doc.data().user_restaurant,
+                            image: doc.data().user_image
+                        }
+                    });
+                    resolve({data: result, success: true});
+                })
+                .catch(error => resolve({success: false}));
+            })
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
     async getMenuByrestaurantId(id){
         try{
             const response = await new Promise((resolve, reject)=>{
@@ -58,10 +82,10 @@ class firebaseServices{
                             result.push(doc.id);
                             result.push(doc.data());
                         });
-                        resolve(result);
+                        resolve({data: result, success: true});
                     })
                 })
-                .then(error => console.log(error));
+                .catch(error => resolve({data:"No such restaurant has been found", success: false}));
             })
             return response;
         }catch(error){
