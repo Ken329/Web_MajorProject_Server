@@ -130,26 +130,6 @@ class firebaseServices{
             console.log(error);
         }
     }
-    async updateUserDetail(id, restaurant, cuisine, image, start_time, end_time, credit){
-        try{
-            const response = await new Promise((resolve, reject)=>{
-                const data = {
-                    user_restaurant : restaurant,
-                    user_cuisine : cuisine,
-                    user_image : image,
-                    user_start_time : start_time,
-                    user_end_time : end_time,
-                    user_credit : credit
-                }
-                const firestore = firebase.firestore();
-                firestore.collection('user').doc(id).update(data);
-                resolve("Information Updated");
-            })
-            return response;
-        }catch(error){
-            console.log(error);
-        }
-    }
     async addNewOrderTakeAway(orderId, id, food, amount, customer, phone, email, type, status, method){
         try{
             const response = await new Promise((resolve, reject)=>{
@@ -167,8 +147,21 @@ class firebaseServices{
                 }
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
-                .then((data) => {
-                    resolve(data);  
+                .then(() => {
+                    var userAmount = "";
+                    const firestore = firebase.firestore();
+                    firestore.collection('user').where("user_id", "==", id).get()
+                    .then((docs) => {
+                        docs.forEach( doc => {     
+                            userAmount = doc.data().user_credit;
+                        });
+                        firestore.collection('user').doc(id).update({
+                            user_credit: (parseFloat(userAmount) + parseFloat(amount)).toFixed(2)
+                        })
+                        .then(() => {
+                            resolve(true);
+                        })
+                    })
                 })
             })
             return response;
@@ -194,8 +187,21 @@ class firebaseServices{
                 }
                 const firestore = firebase.firestore();
                 firestore.collection('user').doc(id).collection('order').doc(orderId).set(data)
-                .then((data) => {
-                    resolve(data);  
+                .then(() => {
+                    var userAmount = "";
+                    const firestore = firebase.firestore();
+                    firestore.collection('user').where("user_id", "==", id).get()
+                    .then((docs) => {
+                        docs.forEach( doc => {     
+                            userAmount = doc.data().user_credit;
+                        });
+                        firestore.collection('user').doc(id).update({
+                            user_credit: (parseFloat(userAmount) + parseFloat(amount)).toFixed(2)
+                        })
+                        .then(() => {
+                            resolve(true);
+                        })
+                    })
                 })
             })
             return response;

@@ -4,6 +4,7 @@ const firebase = require("./firebase/firebase_info");
 const cors = require("cors")
 const app = express();
 const port = process.env.PORT || 4000;
+const nodemailer = require("nodemailer");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -18,14 +19,15 @@ app.get('/', (req, res)=>{
     res.send("Eatsy server is runnning now");
 })
 
+let transporter = nodemailer.createTransport({
+    service: "hotmail",
+    auth: {
+      user: "ken_037729@hotmail.com",
+      pass: "Liaukahsoon123",
+    },
+});
+
 // get restaurant menu by id
-app.get('/getAllMenuRestaurant', (req, res) => {
-    const fire = firebase.getfireInstance();
-    const result = fire.getAllMenuRestaurant();
-    result
-    .then((data) => res.json({data: data}))
-    .then(error => console.log(error));
-})
 app.post('/getRestaurantById', (req, res) => {
     const id = req.body.id;
     
@@ -44,30 +46,6 @@ app.post('/getRestaurantMenuById', (req, res) => {
     .then((data) => res.json({data: data}))
     .then(error => console.log(error));
 })
-app.post('/getRestaurantByCategories', (req, res) => {
-    const categories = req.body.categories;
-    
-    const fire = firebase.getfireInstance();
-    const result = fire.getRestaurantByCategories(categories);
-    result
-    .then((data) => res.json({data: data}))
-    .then(error => console.log(error));
-})
-app.post('/cashInRestaurant', (req, res) => {
-    const id = req.body.id;
-    const amount = req.body.amount;
-
-    const fire = firebase.getfireInstance();
-    const result = fire.getRestaurantById(id);
-    result
-    .then((data) => {
-        const total = parseFloat(data[0].user_credit) + parseFloat(amount);
-        const cashInResult = fire.updateUserDetail(id, data[0].user_restaurant, data[0].user_cuisine, data[0].user_image, data[0].user_start_time, data[0].user_end_time, total.toFixed(2));
-        cashInResult
-        .then((data) => res.json({data: true}))
-    })
-    .then(error => console.log(error));
-})
 app.post('/takeAwayFromRestaurant', (req, res) => {
     const orderId = req.body.orderId;
     const id = req.body.id;
@@ -79,11 +57,23 @@ app.post('/takeAwayFromRestaurant', (req, res) => {
     const email = req.body.email;
     const status = req.body.status;
     const method = req.body.method;
-    
+
     const fire = firebase.getfireInstance();
     const result = fire.addNewOrderTakeAway(orderId, id.toString(), food, amount, customer, phone, email, type, status, method);
     result
-    .then((data) => res.json({data: data}))
+    .then((data) => {
+        if(data){
+            transporter.sendMail({
+                from: "ken_037729@hotmail.com",
+                to: email,
+                subject: "Order has been confirmed",
+                html: `<p>Hi ${customer}, </p><br>
+                <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}</p><br>
+                <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day</p><br>`
+            })
+            .then(() => res.json({data: "Confirmation email has been sent"}))
+        }
+    })
     .then(error => console.log(error));
 })
 app.post('/dineInFromRestaurant', (req, res) => {
@@ -102,7 +92,19 @@ app.post('/dineInFromRestaurant', (req, res) => {
     const fire = firebase.getfireInstance();
     const result = fire.addNewOrderDineIn(orderId, id.toString(), food, amount, customer, tableNo, phone, email, type, status, method);
     result
-    .then((data) => res.json({data: data}))
+    .then((data) => {
+        if(data){
+            transporter.sendMail({
+                from: "ken_037729@hotmail.com",
+                to: email,
+                subject: "Order has been confirmed",
+                html: `<p>Hi ${customer}, </p><br>
+                <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}</p><br>
+                <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day</p><br>`
+            })
+            .then(() => res.json({data: "Confirmation email has been sent"}))
+        }
+    })
     .then(error => console.log(error));
 })
 app.post('/insertNewTable', (req, res) => {
