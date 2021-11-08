@@ -22,8 +22,8 @@ app.get('/', (req, res)=>{
 let transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
-      user: "ken_037729@hotmail.com",
-      pass: "Liaukahsoon123",
+      user: "Eatsy_Order@outlook.com",
+      pass: "kahsoon123",
     },
 });
 
@@ -64,12 +64,12 @@ app.post('/takeAwayFromRestaurant', (req, res) => {
     .then((data) => {
         if(data){
             transporter.sendMail({
-                from: "ken_037729@hotmail.com",
+                from: "Eatsy_Order@outlook.com",
                 to: email,
                 subject: "Order has been confirmed",
                 html: `<p>Hi ${customer}, </p><br>
-                <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}</p><br>
-                <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day</p><br>`
+                <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}.</p><br>
+                <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day.</p><br>`
             })
             .then(() => res.json({data: "Confirmation email has been sent"}))
         }
@@ -95,12 +95,12 @@ app.post('/dineInFromRestaurant', (req, res) => {
     .then((data) => {
         if(data){
             transporter.sendMail({
-                from: "ken_037729@hotmail.com",
+                from: "Eatsy_Order@outlook.com",
                 to: email,
                 subject: "Order has been confirmed",
                 html: `<p>Hi ${customer}, </p><br>
-                <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}</p><br>
-                <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day</p><br>`
+                <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}.</p><br>
+                <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day.</p><br>`
             })
             .then(() => res.json({data: "Confirmation email has been sent"}))
         }
@@ -120,16 +120,6 @@ app.post('/insertNewTable', (req, res) => {
     const result = fire.insertNewTable(id, tableId, name, phone, pax, status, date);
     result
     .then(data => res.json({data: data}))
-    .then(error => console.log(error));
-})
-app.post('/trackOrderWithId', (req, res) => {
-    const restaurantId = req.body.restaurantId;
-    const orderId = req.body.orderId;
-    
-    const fire = firebase.getfireInstance();
-    const result = fire.trackOrderWithId(restaurantId, orderId);
-    result
-    .then((data) => res.json({data: data}))
     .then(error => console.log(error));
 })
 app.post('/trackingFoodWithId', (req, res) => {
