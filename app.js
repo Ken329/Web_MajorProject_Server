@@ -69,9 +69,10 @@ app.post('/takeAwayFromRestaurant', (req, res) => {
                 subject: "Order has been confirmed",
                 html: `<p>Hi ${customer}, </p><br>
                 <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}.</p><br>
+                <p>You can check your order with this link right here https://eatsy.netlify.app//Client/Tracking?res_id=${id.toString()}&order_id=${orderId}</p><br>
                 <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day.</p><br>`
             })
-            .then(() => res.json({data: "Confirmation email has been sent"}))
+            .then(() => res.json({data: "Confirmation email has been sent to " + email}))
         }
     })
     .then(error => console.log(error));
@@ -100,9 +101,10 @@ app.post('/dineInFromRestaurant', (req, res) => {
                 subject: "Order has been confirmed",
                 html: `<p>Hi ${customer}, </p><br>
                 <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved you payment amount RM${amount}.</p><br>
+                <p>You can check your order with this link right here https://eatsy.netlify.app//Client/Tracking?res_id=${id.toString()}&order_id=${orderId}</p><br>
                 <p>Do not hesistate to contact us if you face any trouble. Thank you for choosing us, hope you have a nice day.</p><br>`
             })
-            .then(() => res.json({data: "Confirmation email has been sent"}))
+            .then(() => res.json({data: "Confirmation email has been sent to " + email}))
         }
     })
     .then(error => console.log(error));
@@ -115,11 +117,27 @@ app.post('/insertNewTable', (req, res) => {
     const pax = req.body.pax;
     const status = req.body.status;
     const date = req.body.date;
+    const email = req.body.email;
 
     const fire = firebase.getfireInstance();
     const result = fire.insertNewTable(id, tableId, name, phone, pax, status, date);
     result
-    .then(data => res.json({data: data}))
+    .then((data) => {
+        if(email === undefined){
+            res.json({data: data})
+        }else{
+            transporter.sendMail({
+                from: "Eatsy_Order@outlook.com",
+                to: email,
+                subject: "Table booking has been confirmed",
+                html: `<p>Hi ${name}, </p><br>
+                <p>Thank you for using Eatsy Food Ordering Services! We've successfully recieved your table booking request.</p><br>
+                <p>Please do show this email to our staff in order to get your booked table.</p><br>
+                <p>Do contact us if you can't make it, so we can rearrange another date and time for you.</p><br>`
+            })
+            .then(() => res.json({data: "Confirmation email has been sent to " + email}))
+        }
+    })
     .then(error => console.log(error));
 })
 app.post('/trackingFoodWithId', (req, res) => {

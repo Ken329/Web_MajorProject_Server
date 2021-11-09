@@ -461,9 +461,7 @@ class firebaseServices{
                 firestore.collection('user').doc(id).collection("table").where("status", "!=", "decline").get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        const date = new Date(doc.data().date.seconds * 1000).toLocaleDateString();
-                        var today = new Date().toLocaleDateString();
-                        if(date >= today){
+                        if(doc.data().date >= firebase.firestore.Timestamp.fromDate(new Date())){
                             result.push(doc.data())
                         }
                     });
@@ -483,9 +481,7 @@ class firebaseServices{
                 firestore.collection('user').doc(id).collection("table").orderBy("date").get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        const date = new Date(doc.data().date.seconds * 1000).toLocaleDateString();
-                        var today = new Date().toLocaleDateString();
-                        if(date < today || doc.data().status === "decline"){
+                        if(doc.data().date < firebase.firestore.Timestamp.fromDate(new Date()) || doc.data().status === "decline"){
                             result.push(doc.data())
                         }
                     });
