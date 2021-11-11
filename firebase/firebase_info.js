@@ -405,9 +405,7 @@ class firebaseServices{
                 firestore.collection('user').doc(id).collection("order").orderBy("order_date").get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        const date = new Date(doc.data().order_date.seconds * 1000).toLocaleDateString();
-                        var today = new Date().toLocaleDateString();
-                        if(date < today){
+                        if(doc.data().order_date < firebase.firestore.Timestamp.fromDate(new Date())){
                             result.push(doc.data())
                         }
                     });
