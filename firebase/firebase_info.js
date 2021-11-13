@@ -405,8 +405,11 @@ class firebaseServices{
                 firestore.collection('user').doc(id).collection("order").orderBy("order_date").get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        if(doc.data().order_date < firebase.firestore.Timestamp.fromDate(new Date())){
-                            result.push(doc.data())
+                        if(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) > 
+                            new Date(new Date(doc.data().order_date.seconds * 1000).getFullYear(), 
+                                    new Date(doc.data().order_date.seconds * 1000).getMonth(), 
+                                    new Date(doc.data().order_date.seconds * 1000).getDate())){
+                            result.push(doc.data());
                         }
                     });
                     resolve(result)
@@ -479,7 +482,11 @@ class firebaseServices{
                 firestore.collection('user').doc(id).collection("table").orderBy("date").get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        if(doc.data().date < firebase.firestore.Timestamp.fromDate(new Date()) || doc.data().status === "decline"){
+                        if(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) > 
+                            new Date(new Date(doc.data().date.seconds * 1000).getFullYear(), 
+                                new Date(doc.data().date.seconds * 1000).getMonth(), 
+                                new Date(doc.data().date.seconds * 1000).getDate())
+                            || doc.data().status === "decline"){
                             result.push(doc.data())
                         }
                     });
