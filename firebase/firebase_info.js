@@ -233,8 +233,9 @@ class firebaseServices{
                 firestore.collection('user').doc(restaurantId).collection('menu').get()
                 .then(docs => {
                     docs.forEach( doc => {
-                        if(foodId.includes(doc.id)){
-                            result.push(doc.data());
+                        var index = foodId.findIndex(x => x === doc.id);
+                        if(index > -1){
+                            result.push({index: index, data: doc.data()});
                         }
                     });
                     resolve(result);
